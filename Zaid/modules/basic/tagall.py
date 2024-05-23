@@ -17,13 +17,13 @@ def get_arg(message: Message):
         return ""
     return " ".join(split[1:])
 
-@Client.on_message(filters.command("tagall", ".") & filters.me)
+@Client.on_message(filters.command("tagall", "tag", "utag", ".") & filters.me)
 async def mentionall(client: Client, message: Message):
     chat_id = message.chat.id
     direp = message.reply_to_message
     args = get_arg(message)
     if not direp and not args:
-        return await message.edit("**Send me a message or reply to a message!**")
+        return await message.edit("**Bana bir mesaj gönder veya bir mesaja cevap ver!**")
     await message.delete()
     spam_chats.append(chat_id)
     usrnum = 0
@@ -51,25 +51,25 @@ async def mentionall(client: Client, message: Message):
 @Client.on_message(filters.command("cancel", ".") & filters.me)
 async def cancel_spam(client: Client, message: Message):
     if not message.chat.id in spam_chats:
-        return await message.edit("**It seems there is no tagall here.**")
+        return await message.edit("**Görünüşe göre burada tagall yok.**")
     else:
         try:
             spam_chats.remove(message.chat.id)
         except:
             pass
-        return await message.edit("**Cancelled.**")
+        return await message.edit("**etiketleme durdururldu.**")
 
 
 add_command_help(
-    "tagall",
+    "utag",
     [
         [
             "tagall [text/reply ke chat]",
-            "Tag all the members one by one",
+            "Tüm üyeleri tek tek etiketleyin",
         ],
         [
-            "cancel",
-            f"to stop .tagall",
+            "cancel", "bitir",
+            f"etiketlemeyi durdurur .utag",
         ],
     ],
 )
